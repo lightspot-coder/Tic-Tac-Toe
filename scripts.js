@@ -2,19 +2,115 @@
 
 const createGameBoard = (function() {
     let gameBoard = [[null,null,null],[null,null,null],[null,null,null]];
-    const setMove = (move,x,y) => {
-        if((x > 2 || x < 0) || ( y > 2 || y < 0)){
-            console.log("fuera del tablero");
+    const setMove = (move,row,column) => {
+        if((row > 2 || row < 0) || ( column > 2 || column < 0)){
+            console.log("Out of the board");
         }
         else{
-            gameBoard[x][y] = move;
+            gameBoard[row][column] = move;
             console.log(gameBoard);
-            console.log(gameBoard.length);
-            flowGame();
-
         }
     }
-    const flowGame = () => {
+    const getMove = (row,column) => {
+        return gameBoard[row][column];
+    }
+    const getRow = (row) => {
+        return gameBoard[row];
+    }
+    const getColumn = (column) => {
+        return [gameBoard[0][column],gameBoard[1][column],gameBoard[2][column]];
+    }
+    const getDiagonals = () => {
+        return [[gameBoard[0][0],gameBoard[1][1],gameBoard[2][2]],[gameBoard[2][0],gameBoard[1][1],gameBoard[0][2]]];
+    }
+    const eraseBoard = () => {
+        gameBoard = [[null,null,null],[null,null,null],[null,null,null]];
+        console.log("The board was erased");
+        console.log(gameBoard);
+    }
+    return {setMove,getMove,eraseBoard,getRow,getColumn,getDiagonals};
+})();
+
+const Game = (function(){
+
+    const allEqual = arr => arr.every(val => ((val === arr[0]) && (val !== null)) );
+
+    const startGame = () => {
+        createGameBoard.eraseBoard();
+    }
+    const checkSomeoneWin = (move, row, column) => {
+       
+        // check if there are 3 in a row
+        if(allEqual(createGameBoard.getRow(row))){
+            console.log("3 " + move + " in the row " + row);
+            return true;
+        }
+
+        // check if there are 3 in a column
+        if(allEqual(createGameBoard.getColumn(column))){
+            console.log("3 " + move + " in the column " + column);
+            return true;
+        }
+
+        // check if there are 3 in some of the two diagonals
+        let diagonals = createGameBoard.getDiagonals();
+        if(allEqual(diagonals[0])){
+            console.log("3 " + move + " in the diagonal 0");
+            return true;
+        }
+        if(allEqual(diagonals[1])){
+            console.log("3 " + move + " in the diagonal 1");
+            return true;
+        }
+        console.log("checkSomeoneWin: no winner, keep playing");
+        return false;
+        
+    }
+    const checkTies = () => {
+        for(let row = 0; row < 3 ; row ++){
+            for(let column = 0; column < 3; column++){
+                if(createGameBoard.getMove(row,column) === null){ 
+                    console.log("checkTies: some cells still empty");
+                    return false;
+                }
+            }
+        }
+        console.log("checkTies: cells are full");
+        return true; 
+    }
+    const flowOfGame = () => {
+
+        let gameFinish = false;
+        let ties = false;
+        let winningMove = "";
+
+        startGame();
+        while(!gameFinish && !ties){
+
+            let move = prompt("Select your move (x or o)");
+            let row = prompt(" row:");
+            let column = prompt("column:");
+            console.log("your move is: " + move + " on row " + row + " and column " + column);
+            createGameBoard.setMove(move, row, column);
+            gameFinish = checkSomeoneWin(move, row, column);
+            console.log("flowOfGame: the game it's over?: " + gameFinish );
+            winningMove = move;
+            ties = checkTies();
+        }
+
+        if(ties && !gameFinish){
+            console.log("Game ties, please refresh page to start a new game");
+        }
+        else{
+            console.log("The " + winningMove + " win the game, refresh for start a new game");
+        }
+
+    }
+    return {flowOfGame};
+})();
+
+/*
+const flowGame = () => {
         let previous_move = null;
         let three_in_a_row = false;
         let three_in_a_column = false;
@@ -57,8 +153,4 @@ const createGameBoard = (function() {
         }
 
     }
-    return {setMove};
-})();
-
-
-
+*/
