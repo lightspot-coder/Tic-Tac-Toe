@@ -109,48 +109,81 @@ const Game = (function(){
     return {flowOfGame};
 })();
 
-/*
-const flowGame = () => {
-        let previous_move = null;
-        let three_in_a_row = false;
-        let three_in_a_column = false;
-        let ties = false;
+const displayBoard = (function(){
 
-        // check if someone win in a row
-        for( let i=0; i < gameBoard.length; i++ ){
-            previous_move = gameBoard[i][0];
-            for( let j=1; j < gameBoard[i].length;j++){
-                let current_move_row = gameBoard[i][j];
-                if((previous_move != null) && (previous_move === current_move_row)){
-                    three_in_a_row = true;
-                }
-                else{
-                    three_in_a_row = false;
-                }
-                previous_move = current_move_row;
-            }
-            if(three_in_a_row === true){
-                return console.log(`the ${previous_move}'s win the game`);
-            }
-        }
+    let cell1 = null;
+    let cell2 = null;
+    let cell3 = null;
+    let cell4 = null;
+    let cell5 = null;
+    let cell6 = null;
+    let cell7 = null;
+    let cell8 = null;
+    let cell9 = null;
 
-        // check if someone win in a column
-        for( let i=0; i < gameBoard.length; i++ ){
-            previous_move = gameBoard[0][i];
-            for( let j=1; j < 3 ;j++){
-                let current_move_column = gameBoard[j][i];
-                if((previous_move != null) && (previous_move === current_move_column)){
-                    three_in_a_column = true;
-                }
-                else{
-                    three_in_a_column = false;
-                }
-                previous_move = current_move_column;
-            }
-            if(three_in_a_column === true){
-                return console.log(`the ${previous_move}'s win the game`);
-            }
-        }
+    init = () => {
+
+        cell1 = document.getElementById("cell-1");
+        cell2 = document.getElementById("cell-2");
+        cell3 = document.getElementById("cell-3");
+        cell4 = document.getElementById("cell-4");
+        cell5 = document.getElementById("cell-5");
+        cell6 = document.getElementById("cell-6");
+        cell7 = document.getElementById("cell-7");
+        cell8 = document.getElementById("cell-8");
+        cell9 = document.getElementById("cell-9");
+
+        let p1 = document.createElement("p");
+        
+        let p2 = document.createElement("p");
+       
+        let p3 = document.createElement("p");
+        
+        let p4 = document.createElement("p");
+      
+        let p5 = document.createElement("p");
+        
+        let p6 = document.createElement("p");
+        
+        let p7 = document.createElement("p");
+        
+        let p8 = document.createElement("p");
+        
+        let p9 = document.createElement("p");
+
+        cell1.appendChild(p1);
+        cell2.appendChild(p2);
+        cell3.appendChild(p3);
+        cell4.appendChild(p4);
+        cell5.appendChild(p5);
+        cell6.appendChild(p6);
+        cell7.appendChild(p7);
+        cell8.appendChild(p8);
+        cell9.appendChild(p9);
+        
+        
+
+        
 
     }
-*/
+    addMove = (id) => {
+        console.log("render->addMove: trying to render a x");
+        let cell_clicked = document.getElementById(id);
+        cell_clicked.childNodes[0].textContent = "X";
+        
+    }
+    render = () => {
+        init();
+        cell1.addEventListener("click", function () {addMove("cell-1")});
+        cell2.addEventListener("click",function () {addMove("cell-2")});
+        cell3.addEventListener("click",function () {addMove("cell-3")});
+        cell4.addEventListener("click",function () {addMove("cell-4")});
+        cell5.addEventListener("click",function () {addMove("cell-5")});
+        cell6.addEventListener("click",function () {addMove("cell-6")});
+        cell7.addEventListener("click",function () {addMove("cell-7")});
+        cell8.addEventListener("click",function () {addMove("cell-8")});
+        cell9.addEventListener("click",function () {addMove("cell-9")});
+    }
+    return {render};
+
+})();

@@ -1,8 +1,24 @@
-.cell{
-    border: 2px solid black;
+.container{
+    margin-left: 200px;
+    width: 800px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .board{
     display: grid;
-    grid-template-columns: 50px 50px 50px;
-    grid-template-rows: 50px 50px 50px;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px;
+}
+.cell {
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cell > p{
+    font-weight: bold;
+    font-size: 50px;
 }
