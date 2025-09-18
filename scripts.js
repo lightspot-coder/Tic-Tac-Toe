@@ -1,5 +1,7 @@
 //console.log("Hello world");
 
+let game_over_message = document.getElementById("game-over-message");
+
 const createGameBoard = (function() {
     let gameBoard = [[null,null,null],[null,null,null],[null,null,null]];
     const setMove = (move,row,column) => {
@@ -83,7 +85,7 @@ const Game = (function(){
         return true; 
     }
     const flowOfGame = (move, row, column) => {
-        
+
         console.log("your move is: " + move + " on row " + row + " and column " + column);
         createGameBoard.setMove(move, row, column);
         gameFinish = checkSomeoneWin(move, row, column);
@@ -94,9 +96,11 @@ const Game = (function(){
 
         if(gameFinish){
             console.log("The " + winningMove + " win the game, refresh for start a new game");
+            game_over_message.textContent = "The " + winningMove + " win the game, refresh for start a new game";
         }
         else if(ties){
             console.log("Game ties, please refresh page to start a new game");
+            game_over_message.textContent = "Game ties, please refresh page to start a new game";
         }
         else {
             console.log("keep playing!!!!!!");
@@ -168,9 +172,9 @@ function addMove(id){
             console.log("addMove: trying to render a " + current_selection);
             cell_clicked.childNodes[0].textContent = current_selection;
             let statOfGame = Game.flowOfGame(current_selection,+id.charAt(5),+id.charAt(6));
-            if(statOfGame[0] || statOfGame[1]){
+            if(statOfGame[0] || statOfGame[1]){ // someone win the game or ties
                 console.log("addMove: the game is over!!!!!!!");
-                displayBoard.remove_Events();
+                displayBoard.remove_Events(); 
             }
         }
         
