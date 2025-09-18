@@ -33,6 +33,10 @@ const createGameBoard = (function() {
 
 const Game = (function(){
 
+    let gameFinish = false;
+    let ties = false;
+    let winningMove = "";
+
     const allEqual = arr => arr.every(val => ((val === arr[0]) && (val !== null)) );
 
     const startGame = () => {
@@ -78,112 +82,100 @@ const Game = (function(){
         console.log("checkTies: cells are full");
         return true; 
     }
-    const flowOfGame = () => {
+    const flowOfGame = (move, row, column) => {
+        
+        console.log("your move is: " + move + " on row " + row + " and column " + column);
+        createGameBoard.setMove(move, row, column);
+        gameFinish = checkSomeoneWin(move, row, column);
+        console.log("flowOfGame: the game it's over?: " + gameFinish );
+        winningMove = move;
+        ties = checkTies();
+       // }
 
-        let gameFinish = false;
-        let ties = false;
-        let winningMove = "";
-
-        startGame();
-        while(!gameFinish && !ties){
-
-            let move = prompt("Select your move (x or o)");
-            let row = prompt(" row:");
-            let column = prompt("column:");
-            console.log("your move is: " + move + " on row " + row + " and column " + column);
-            createGameBoard.setMove(move, row, column);
-            gameFinish = checkSomeoneWin(move, row, column);
-            console.log("flowOfGame: the game it's over?: " + gameFinish );
-            winningMove = move;
-            ties = checkTies();
-        }
-
-        if(ties && !gameFinish){
-            console.log("Game ties, please refresh page to start a new game");
-        }
-        else{
+        if(gameFinish){
             console.log("The " + winningMove + " win the game, refresh for start a new game");
         }
+        else if(ties){
+            console.log("Game ties, please refresh page to start a new game");
+        }
+        else {
+            console.log("keep playing!!!!!!");
+        }
+        return [gameFinish,ties,winningMove];
+        
 
     }
-    return {flowOfGame};
+    return {startGame,flowOfGame};
 })();
 
 const displayBoard = (function(){
 
-    let cell1 = null;
-    let cell2 = null;
-    let cell3 = null;
-    let cell4 = null;
-    let cell5 = null;
-    let cell6 = null;
-    let cell7 = null;
-    let cell8 = null;
-    let cell9 = null;
+
+    let array_cells = [[null,null,null],[null,null,null],[null,null,null]];
 
     init = () => {
-
-        cell1 = document.getElementById("cell-1");
-        cell2 = document.getElementById("cell-2");
-        cell3 = document.getElementById("cell-3");
-        cell4 = document.getElementById("cell-4");
-        cell5 = document.getElementById("cell-5");
-        cell6 = document.getElementById("cell-6");
-        cell7 = document.getElementById("cell-7");
-        cell8 = document.getElementById("cell-8");
-        cell9 = document.getElementById("cell-9");
-
-        let p1 = document.createElement("p");
-        
-        let p2 = document.createElement("p");
-       
-        let p3 = document.createElement("p");
-        
-        let p4 = document.createElement("p");
-      
-        let p5 = document.createElement("p");
-        
-        let p6 = document.createElement("p");
-        
-        let p7 = document.createElement("p");
-        
-        let p8 = document.createElement("p");
-        
-        let p9 = document.createElement("p");
-
-        cell1.appendChild(p1);
-        cell2.appendChild(p2);
-        cell3.appendChild(p3);
-        cell4.appendChild(p4);
-        cell5.appendChild(p5);
-        cell6.appendChild(p6);
-        cell7.appendChild(p7);
-        cell8.appendChild(p8);
-        cell9.appendChild(p9);
-        
-        
-
-        
+        for(let i = 0; i < 3; i++){
+            for(let j = 0; j < 3; j++){
+                let id = `cell-${i}${j}`;
+                array_cells[i][j] = document.getElementById(id);
+                let p = document.createElement("p");
+                array_cells[i][j].appendChild(p);
+            }
+        }
+        console.log("init: create array of cells");
+        console.log(array_cells[0][0]);
 
     }
-    addMove = (id) => {
-        console.log("render->addMove: trying to render a x");
-        let cell_clicked = document.getElementById(id);
-        cell_clicked.childNodes[0].textContent = "X";
-        
-    }
+
     render = () => {
+        console.log("render:gameboard displayed on the page");
         init();
-        cell1.addEventListener("click", function () {addMove("cell-1")});
-        cell2.addEventListener("click",function () {addMove("cell-2")});
-        cell3.addEventListener("click",function () {addMove("cell-3")});
-        cell4.addEventListener("click",function () {addMove("cell-4")});
-        cell5.addEventListener("click",function () {addMove("cell-5")});
-        cell6.addEventListener("click",function () {addMove("cell-6")});
-        cell7.addEventListener("click",function () {addMove("cell-7")});
-        cell8.addEventListener("click",function () {addMove("cell-8")});
-        cell9.addEventListener("click",function () {addMove("cell-9")});
+        for(let i = 0; i < 3; i++){
+            for(let j = 0; j < 3; j++){
+                let id = `cell-${i}${j}`;
+                array_cells[i][j].addEventListener("click", function () {addMove(id)});
+                array_cells[i][j].setAttribute("Listener",true);
+            }
+        }
     }
-    return {render};
+
+    remove_Events = () => {
+        for(let i = 0; i < 3; i++){
+            for(let j = 0; j < 3; j++){
+                array_cells[i][j].setAttribute("Listener",false);
+            }
+        }
+
+    }
+    return {render,init,remove_Events};
 
 })();
+
+let current_selection = "X";
+
+function addMove(id){
+
+        
+        let cell_clicked = document.getElementById(id);
+        console.log("addMove: listener attribute = " + cell_clicked.getAttribute("Listener") );
+        if(cell_clicked.getAttribute("Listener") === "true"){
+            if(current_selection === "X"){
+                current_selection = "O";
+            }
+            else{
+                current_selection = "X";
+            }
+            console.log("addMove: trying to render a " + current_selection);
+            cell_clicked.childNodes[0].textContent = current_selection;
+            let statOfGame = Game.flowOfGame(current_selection,+id.charAt(5),+id.charAt(6));
+            if(statOfGame[0] || statOfGame[1]){
+                console.log("addMove: the game is over!!!!!!!");
+                displayBoard.remove_Events();
+            }
+        }
+        
+}
+
+
+Game.startGame();
+displayBoard.render();
