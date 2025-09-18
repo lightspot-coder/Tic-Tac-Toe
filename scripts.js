@@ -143,7 +143,7 @@ const displayBoard = (function(){
         }
     }
 
-    remove_Events = () => {
+    remove_all_events = () => {
         for(let i = 0; i < 3; i++){
             for(let j = 0; j < 3; j++){
                 array_cells[i][j].setAttribute("Listener",false);
@@ -151,7 +151,13 @@ const displayBoard = (function(){
         }
 
     }
-    return {render,init,remove_Events};
+    remove_event = (id) => {
+
+        let cell_clicked = document.getElementById(id);
+        cell_clicked.setAttribute("Listener",false);
+
+    }
+    return {render,init,remove_all_events,remove_event};
 
 })();
 
@@ -169,12 +175,15 @@ function addMove(id){
             else{
                 current_selection = "X";
             }
+
+            displayBoard.remove_event(id);
             console.log("addMove: trying to render a " + current_selection);
             cell_clicked.childNodes[0].textContent = current_selection;
+            
             let statOfGame = Game.flowOfGame(current_selection,+id.charAt(5),+id.charAt(6));
             if(statOfGame[0] || statOfGame[1]){ // someone win the game or ties
                 console.log("addMove: the game is over!!!!!!!");
-                displayBoard.remove_Events(); 
+                displayBoard.remove_all_events(); 
             }
         }
         
