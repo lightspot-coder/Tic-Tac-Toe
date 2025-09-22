@@ -3,9 +3,18 @@
     width: 800px;
     height: 800px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+    gap: 40px;
+}
+
+.main-container{
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 300px;
 }
 
 .board{
@@ -23,3 +32,9 @@
     font-weight: bold;
     font-size: 50px;
 }
+
+img[id*="player_"] {
+    width: 50px;
+    height: 50px;
+}
+

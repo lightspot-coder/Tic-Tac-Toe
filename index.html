@@ -10,6 +10,20 @@
 
   <body>
     <div class="container">
+      <div id="player_1">
+        <h2 id="player_1_header">Player 1</h2>
+        <form action="" method="">
+          <label for="player_1_name">Name:</label>
+          <input type="text" id="player_1_name" placeholder="player 1">
+          <button id="button_player_1_name" type="button">add name</button>
+        </form>
+        <div>
+          <p>choose your move:</p>
+          <img id="player_1_move_o" move="O" src="img/alpha-o-circle.svg"/>
+          <img id="player_1_move_x" move="X" src="img/alpha-x-circle.svg"/>
+        </div>
+      </div>
+      <div class="main-container">
       <h1>Tic tac toe</h1>
       <div class="board" id="gameBoard">
           <div class="cell" id ="cell-00"></div>
@@ -23,6 +37,20 @@
           <div class="cell" id ="cell-22"></div>
       </div>
       <h2 id="game-over-message"></h2>
+      </div>
+      <div id="player_2">
+        <h2 id="player_2_header">Player 2</h2>
+         <form action="" method="">
+          <label for="player_2_name">Name:</label>
+          <input type="text" id="player_2_name" placeholder="player 2">
+          <button id="button_player_2_name" type="button">add name</button>
+        </form>
+        <div>
+          <p>choose your move:</p>
+          <img id="player_2_move_o" move="O" src="img/alpha-o-circle.svg"/>
+          <img id="player_2_move_o" move="X" src="img/alpha-x-circle.svg"/>
+        </div>
+      </div>
     </div>
     <script src="scripts.js"></script>
   </body>

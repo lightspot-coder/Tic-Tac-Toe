@@ -2,6 +2,22 @@
 
 let game_over_message = document.getElementById("game-over-message");
 
+
+function createPlayer (){
+    let name;
+    let choosen_move;
+    let wins = 0;
+    const getName = () => { return name };
+    const setName = (player_name) => { name = player_name};
+    const getMove = () => { return choosen_move};
+    const setMove = (move) => {choosen_move = move};
+    const getWins = () => {return wins};
+    const setWins = () => {wins++}; 
+    return {getName,setName,getMove,setMove,getWins,setWins};
+}
+
+
+
 const createGameBoard = (function() {
     let gameBoard = [[null,null,null],[null,null,null],[null,null,null]];
     const setMove = (move,row,column) => {
@@ -42,7 +58,8 @@ const Game = (function(){
     const allEqual = arr => arr.every(val => ((val === arr[0]) && (val !== null)) );
 
     const startGame = () => {
-        createGameBoard.eraseBoard();
+        createGameBoard.eraseBoard(); 
+
     }
     const checkSomeoneWin = (move, row, column) => {
        
@@ -141,8 +158,8 @@ const displayBoard = (function(){
                 array_cells[i][j].setAttribute("Listener",true);
             }
         }
-    }
 
+    }
     remove_all_events = () => {
         for(let i = 0; i < 3; i++){
             for(let j = 0; j < 3; j++){
@@ -157,7 +174,80 @@ const displayBoard = (function(){
         cell_clicked.setAttribute("Listener",false);
 
     }
+   
     return {render,init,remove_all_events,remove_event};
+
+})();
+
+const display_players = (function(){
+
+    let player1 = createPlayer();
+    let player2 = createPlayer();
+
+    let players = [];
+    let button_player1;
+    let button_player2;
+    let move_player1;
+    let move_player2;
+
+
+    const init = () => {
+
+        player1.setName("Player 1");
+        player1.setMove("X");
+        player1.setWins(0);
+    
+        player2.setName("Player 2");
+        player2.setMove("X");
+        player2.setWins(0);
+
+        players[0] = player1;
+        players[1] = player2;
+
+        button_player1 = document.getElementById("button_player_1_name");
+        button_player2 = document.getElementById("button_player_2_name");
+
+
+
+
+    }
+
+    const prevent_Default = (event) => {
+        event.preventDefault();
+    }
+    const change_header = (player) => {
+
+        //"player_1","player_1_name"
+        let id = "player_" + (player + 1);
+        let input = "player_" + (player + 1) + "_name";
+        
+        console.log(id);
+        console.log(input);
+        const player_info_div = document.getElementById(id);
+        //console.log("changeName: change h2 for player 1 to " );
+        //console.log(player_info_div.childNodes[1]);
+        let new_name = document.getElementById(input).value;
+        if(new_name === ""){
+            players[player].setName("Player " + (player + 1));
+        }
+        else
+            players[player].setName(new_name);
+        player_info_div.childNodes[1].textContent = players[player].getName();
+        console.log(players[player].getName());
+
+
+    }
+
+    addEvents = () => {
+
+        //button_player1.addEventListener("click",prevent_Default);
+        button_player1.addEventListener("click",function () {change_header(0)});
+        //button_player2.addEventListener("click",prevent_Default);
+        button_player2.addEventListener("click",function () {change_header(1)});
+
+
+    }
+    return {init,addEvents};
 
 })();
 
@@ -192,3 +282,5 @@ function addMove(id){
 
 Game.startGame();
 displayBoard.render();
+display_players.init();
+display_players.addEvents();
