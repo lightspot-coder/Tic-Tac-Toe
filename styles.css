@@ -38,3 +38,12 @@ img[id*="player_"] {
     height: 50px;
 }
 
+.move_selected{
+    border: 5px solid red;
+    
+}
+
+.move_no_selected{
+    border-style: none;
+}
+

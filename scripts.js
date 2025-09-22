@@ -179,16 +179,18 @@ const displayBoard = (function(){
 
 })();
 
+let player1 = createPlayer();
+let player2 = createPlayer();
+
 const display_players = (function(){
 
-    let player1 = createPlayer();
-    let player2 = createPlayer();
+    
 
     let players = [];
     let button_player1;
     let button_player2;
-    let move_player1;
-    let move_player2;
+    
+    let img_button_moves = [[null,null],[null,null]];
 
 
     const init = () => {
@@ -198,7 +200,7 @@ const display_players = (function(){
         player1.setWins(0);
     
         player2.setName("Player 2");
-        player2.setMove("X");
+        player2.setMove("O");
         player2.setWins(0);
 
         players[0] = player1;
@@ -207,7 +209,13 @@ const display_players = (function(){
         button_player1 = document.getElementById("button_player_1_name");
         button_player2 = document.getElementById("button_player_2_name");
 
+        img_button_moves[0][0] = document.getElementById("player_1_move_o");
+        img_button_moves[0][1] = document.getElementById("player_1_move_x");
+        img_button_moves[1][0] = document.getElementById("player_2_move_o");
+        img_button_moves[1][1] = document.getElementById("player_2_move_x");
 
+        img_button_moves[0][1].setAttribute("class","move_selected");
+        img_button_moves[1][0].setAttribute("class","move_selected");
 
 
     }
@@ -238,6 +246,44 @@ const display_players = (function(){
 
     }
 
+    const selectMove = (i,j,move_p1,move_p2) => {
+
+        if(img_button_moves[i][j].getAttribute("Listener")  === "true"){
+
+            img_button_moves[0][0].setAttribute("class","move_no_selected");
+            img_button_moves[0][1].setAttribute("class","move_no_selected");
+            img_button_moves[1][0].setAttribute("class","move_no_selected");
+            img_button_moves[1][1].setAttribute("class","move_no_selected");
+            let k;
+            let l;
+            if(i===0){
+                k = 1;
+                if(j===0)
+                    l = 1;
+                else
+                    l = 0;
+
+            }
+            else{
+                k = 0;
+                if(j===0)
+                    l = 1;
+                else
+                    l = 0;
+
+            }
+
+            players[0].setMove(move_p1);
+            players[1].setMove(move_p2);
+            img_button_moves[i][j].setAttribute("class","move_selected");
+            img_button_moves[k][l].setAttribute("class","move_selected");
+
+            console.log(img_button_moves[i][j].getAttribute("move"));
+            current_selection = img_button_moves[i][j].getAttribute("move");
+        }
+
+    }
+
     addEvents = () => {
 
         //button_player1.addEventListener("click",prevent_Default);
@@ -245,13 +291,31 @@ const display_players = (function(){
         //button_player2.addEventListener("click",prevent_Default);
         button_player2.addEventListener("click",function () {change_header(1)});
 
+        img_button_moves[0][0].addEventListener("click",function () {selectMove(0,0,"O","X")});
+        img_button_moves[0][0].setAttribute("Listener",true);
+        img_button_moves[0][1].addEventListener("click",function () {selectMove(0,1,"X","O")});
+        img_button_moves[0][1].setAttribute("Listener",true);
+        img_button_moves[1][0].addEventListener("click",function () {selectMove(1,0,"X","O")});
+        img_button_moves[1][0].setAttribute("Listener",true);
+        img_button_moves[1][1].addEventListener("click",function () {selectMove(1,1,"O","X")});
+        img_button_moves[1][1].setAttribute("Listener",true);
+
 
     }
-    return {init,addEvents};
+    const remove_img_events = () => {
+
+        img_button_moves[0][0].setAttribute("Listener",false);
+        img_button_moves[0][1].setAttribute("Listener",false);
+        img_button_moves[1][0].setAttribute("Listener",false);
+        img_button_moves[1][1].setAttribute("Listener",false);
+    }
+
+
+    return {init,addEvents,remove_img_events};
 
 })();
 
-let current_selection = "X";
+let current_player = 1;
 
 function addMove(id){
 
@@ -259,18 +323,25 @@ function addMove(id){
         let cell_clicked = document.getElementById(id);
         console.log("addMove: listener attribute = " + cell_clicked.getAttribute("Listener") );
         if(cell_clicked.getAttribute("Listener") === "true"){
-            if(current_selection === "X"){
-                current_selection = "O";
+           
+            let next_move = "";
+
+            display_players.remove_img_events();
+
+            if(current_player === 1){
+                 current_player = 2;
+                 next_move = player1.getMove();
             }
             else{
-                current_selection = "X";
+                current_player = 1;
+                next_move = player2.getMove();
             }
 
             displayBoard.remove_event(id);
-            console.log("addMove: trying to render a " + current_selection);
-            cell_clicked.childNodes[0].textContent = current_selection;
+            console.log("addMove: trying to render a " + next_move);
+            cell_clicked.childNodes[0].textContent = next_move;
             
-            let statOfGame = Game.flowOfGame(current_selection,+id.charAt(5),+id.charAt(6));
+            let statOfGame = Game.flowOfGame(next_move,+id.charAt(5),+id.charAt(6));
             if(statOfGame[0] || statOfGame[1]){ // someone win the game or ties
                 console.log("addMove: the game is over!!!!!!!");
                 displayBoard.remove_all_events(); 
