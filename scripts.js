@@ -7,12 +7,12 @@ function createPlayer (){
     let name;
     let choosen_move;
     let wins = 0;
-    const getName = () => { return name };
-    const setName = (player_name) => { name = player_name};
-    const getMove = () => { return choosen_move};
-    const setMove = (move) => {choosen_move = move};
-    const getWins = () => {return wins};
-    const setWins = () => {wins++}; 
+    const getName = () => { return name; };
+    const setName = (player_name) => { name = player_name;};
+    const getMove = () => { return choosen_move;};
+    const setMove = (move) => {choosen_move = move;};
+    const getWins = () => {return wins;};
+    const setWins = () => {wins += 1;}; 
     return {getName,setName,getMove,setMove,getWins,setWins};
 }
 
@@ -58,7 +58,9 @@ const Game = (function(){
     const allEqual = arr => arr.every(val => ((val === arr[0]) && (val !== null)) );
 
     const startGame = () => {
+
         createGameBoard.eraseBoard(); 
+        
 
     }
     const checkSomeoneWin = (move, row, column) => {
@@ -112,12 +114,25 @@ const Game = (function(){
        // }
 
         if(gameFinish){
-            console.log("The " + winningMove + " win the game, refresh for start a new game");
+            //console.log("The " + winningMove + " win the game, refresh for start a new game");
+            if(winningMove === player1.getMove()){
+                console.log("Player 1 win the game with " + winningMove + ", refresh for start a new game");
+                player1.setWins();
+                console.log("Victories = " + player1.getWins());
+
+            }
+            else{
+                console.log("Player 2 win the game with " + winningMove + ", refresh for start a new game");
+                player2.setWins();
+                console.log("Victories = " + player2.getWins());
+            }
             game_over_message.textContent = "The " + winningMove + " win the game, refresh for start a new game";
         }
         else if(ties){
             console.log("Game ties, please refresh page to start a new game");
             game_over_message.textContent = "Game ties, please refresh page to start a new game";
+            
+            
         }
         else {
             console.log("keep playing!!!!!!");
@@ -133,6 +148,19 @@ const displayBoard = (function(){
 
 
     let array_cells = [[null,null,null],[null,null,null],[null,null,null]];
+
+    restart = () => {
+        for(let i = 0; i < 3; i++){
+            for(let j = 0; j < 3; j++){
+                 array_cells[i][j].childNodes[0].textContent = "";
+                 array_cells[i][j].setAttribute("Listener",true);
+
+            }
+        }
+
+        console.log("displayBoard.restart():  erase board");
+        //console.log(array_cells[0][0].childNodes[0]);
+    }
 
     init = () => {
         for(let i = 0; i < 3; i++){
@@ -175,7 +203,7 @@ const displayBoard = (function(){
 
     }
    
-    return {render,init,remove_all_events,remove_event};
+    return {render,restart,init,remove_all_events,remove_event};
 
 })();
 
@@ -192,16 +220,19 @@ const display_players = (function(){
     
     let img_button_moves = [[null,null],[null,null]];
 
+    let player1_displayWins;
+    let player2_displayWins;
+
+    let current_player_div;
+
 
     const init = () => {
 
         player1.setName("Player 1");
         player1.setMove("X");
-        player1.setWins(0);
     
         player2.setName("Player 2");
         player2.setMove("O");
-        player2.setWins(0);
 
         players[0] = player1;
         players[1] = player2;
@@ -216,6 +247,12 @@ const display_players = (function(){
 
         img_button_moves[0][1].setAttribute("class","move_selected");
         img_button_moves[1][0].setAttribute("class","move_selected");
+
+        player1_displayWins = document.getElementById("player_1_wins");
+        player2_displayWins = document.getElementById("player_2_wins");
+
+        current_player_div = document.getElementById("player_1_div");
+        current_player_div.setAttribute("class", "current_player");
 
 
     }
@@ -309,9 +346,43 @@ const display_players = (function(){
         img_button_moves[1][0].setAttribute("Listener",false);
         img_button_moves[1][1].setAttribute("Listener",false);
     }
+    const active_img_events = () => {
+
+        img_button_moves[0][0].setAttribute("Listener",true);
+        img_button_moves[0][1].setAttribute("Listener",true);
+        img_button_moves[1][0].setAttribute("Listener",true);
+        img_button_moves[1][1].setAttribute("Listener",true);
+    }
+
+    const display_wins = () => {
+
+        player1_displayWins.textContent = "Wins = " + player1.getWins();
+        console.log("display_players.display_wins:");
+        console.log(player1_displayWins);
+        player2_displayWins.textContent = "Wins = " + player2.getWins();
+
+    }
+
+    const showCurrentPlayer = () => {
+
+        if(current_player === 1){
+            current_player_div = document.getElementById("player_2_div");
+            current_player_div.setAttribute("class", "no_current_player");
+            current_player_div = document.getElementById("player_1_div");
+            current_player_div.setAttribute("class", "current_player");
+        }
+        else{
+            current_player_div = document.getElementById("player_1_div");
+            current_player_div.setAttribute("class", "no_current_player");
+            current_player_div = document.getElementById("player_2_div");
+            current_player_div.setAttribute("class", "current_player");
+        }
+
+    }
 
 
-    return {init,addEvents,remove_img_events};
+
+    return {init,addEvents,remove_img_events,active_img_events,display_wins,showCurrentPlayer};
 
 })();
 
@@ -319,7 +390,7 @@ let current_player = 1;
 
 function addMove(id){
 
-        
+        display_restart_button.removeEvent();
         let cell_clicked = document.getElementById(id);
         console.log("addMove: listener attribute = " + cell_clicked.getAttribute("Listener") );
         if(cell_clicked.getAttribute("Listener") === "true"){
@@ -327,6 +398,7 @@ function addMove(id){
             let next_move = "";
 
             display_players.remove_img_events();
+            
 
             if(current_player === 1){
                  current_player = 2;
@@ -337,6 +409,8 @@ function addMove(id){
                 next_move = player2.getMove();
             }
 
+            display_players.showCurrentPlayer();
+
             displayBoard.remove_event(id);
             console.log("addMove: trying to render a " + next_move);
             cell_clicked.childNodes[0].textContent = next_move;
@@ -345,13 +419,56 @@ function addMove(id){
             if(statOfGame[0] || statOfGame[1]){ // someone win the game or ties
                 console.log("addMove: the game is over!!!!!!!");
                 displayBoard.remove_all_events(); 
+                display_restart_button.setActiveEvent();
+                display_players.display_wins();
             }
         }
         
 }
+
+const display_restart_button = ( function(){
+
+    let restart_button = document.getElementById("restart_game");
+
+    const restartGame = () => {
+
+       // if(restart_button.getAttribute("Listener") === "true"){
+            console.log("restartGame: the game will be restart");
+            game_over_message.textContent = "";
+            Game.startGame();
+            displayBoard.restart();
+            display_players.active_img_events();
+            
+            display_players.showCurrentPlayer();
+            
+       // }
+        /*else{
+            console.log("restartGame: the game starts already, it can't be restart");
+        }*/
+    }
+
+    const init = () => {
+        restart_button.addEventListener("click",restartGame);
+        restart_button.setAttribute("Listener",true);
+    }
+    const removeEvent = () => {
+
+        restart_button.setAttribute("Listener",false);
+
+    }
+    const setActiveEvent = () => {
+
+        restart_button.setAttribute("Listener",true);
+
+    }
+    return {restartGame,init,removeEvent,setActiveEvent};
+
+
+})();
 
 
 Game.startGame();
 displayBoard.render();
 display_players.init();
 display_players.addEvents();
+display_restart_button.init();

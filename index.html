@@ -10,8 +10,9 @@
 
   <body>
     <div class="container">
-      <div id="player_1">
+      <div id="player_1_div">
         <h2 id="player_1_header">Player 1</h2>
+        <h2 id="player_1_wins">Wins = 0</h2>
         <form action="" method="">
           <label for="player_1_name">Name:</label>
           <input type="text" id="player_1_name" placeholder="player 1">
@@ -38,19 +39,26 @@
       </div>
       <h2 id="game-over-message"></h2>
       </div>
-      <div id="player_2">
+      <div id="player_2_div">
         <h2 id="player_2_header">Player 2</h2>
+        <h2 id="player_2_wins">Wins = 0</h2>
          <form action="" method="">
           <label for="player_2_name">Name:</label>
           <input type="text" id="player_2_name" placeholder="player 2">
           <button id="button_player_2_name" type="button">add name</button>
         </form>
+        
         <div>
           <p>choose your move:</p>
           <img id="player_2_move_o" move="O" src="img/alpha-o-circle.svg"/>
           <img id="player_2_move_x" move="X" src="img/alpha-x-circle.svg"/>
         </div>
       </div>
+    </div>
+    <div class="footer">
+      <button id="restart_game">
+        Restart
+      </button>
     </div>
     <script src="scripts.js"></script>
   </body>

@@ -1,12 +1,26 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.footer{
+    background-color: rgb(189, 197, 197);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
 .container{
     margin-left: 200px;
     width: 800px;
-    height: 800px;
+    height: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
     justify-content: space-around;
-    gap: 40px;
+    gap: 80px;
 }
 
 .main-container{
@@ -47,3 +61,11 @@ img[id*="player_"] {
     border-style: none;
 }
 
+
+.current_player{
+    border: 5px solid blue;
+}
+
+.not_current_player{
+    border-style: none;
+}
