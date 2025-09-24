@@ -126,11 +126,11 @@ const Game = (function(){
                 player2.setWins();
                 console.log("Victories = " + player2.getWins());
             }
-            game_over_message.textContent = "The " + winningMove + " win the game, refresh for start a new game";
+            game_over_message.textContent = "The " + winningMove + " win the game. Click on Restart button below to start a new game";
         }
         else if(ties){
             console.log("Game ties, please refresh page to start a new game");
-            game_over_message.textContent = "Game ties, please refresh page to start a new game";
+            game_over_message.textContent = "Game ties. Click on Restart button below to start a new game";
             
             
         }
