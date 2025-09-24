@@ -5,27 +5,32 @@
     <meta name="viewport" content="width=device-width">
     <link rel='stylesheet' href='styles.css'/>
     <title>Tic Tac Toe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&family=Playwrite+HU:wght@100..400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
   </head>
 
   <body>
     <div class="container">
-      <div id="player_1_div">
+      <div id="player_1_div" class="current_player">
         <h2 id="player_1_header">Player 1</h2>
         <h2 id="player_1_wins">Wins = 0</h2>
-        <form action="" method="">
+        
           <label for="player_1_name">Name:</label>
           <input type="text" id="player_1_name" placeholder="player 1">
           <button id="button_player_1_name" type="button">add name</button>
-        </form>
-        <div>
+        
+        <div class="choose_move_container">
           <p>choose your move:</p>
-          <img id="player_1_move_o" move="O" src="img/alpha-o-circle.svg"/>
-          <img id="player_1_move_x" move="X" src="img/alpha-x-circle.svg"/>
+          <div class="choose_move">
+            <p id="player_1_move_o" move="O" class="move_no_selected">O</p>
+            <p id="player_1_move_x" move="X" class="move_selected">X</p>
+          </div>
         </div>
       </div>
       <div class="main-container">
-      <h1>Tic tac toe</h1>
+      <h1>Tic Tac Toe</h1>
       <div class="board" id="gameBoard">
           <div class="cell" id ="cell-00"></div>
           <div class="cell" id ="cell-01"></div>
@@ -37,21 +42,22 @@
           <div class="cell" id ="cell-21"></div>
           <div class="cell" id ="cell-22"></div>
       </div>
-      <h2 id="game-over-message"></h2>
+      <h3 id="game-over-message"></h3>
       </div>
-      <div id="player_2_div">
+      <div id="player_2_div" class="no_current_player">
         <h2 id="player_2_header">Player 2</h2>
         <h2 id="player_2_wins">Wins = 0</h2>
-         <form action="" method="">
+         
           <label for="player_2_name">Name:</label>
           <input type="text" id="player_2_name" placeholder="player 2">
           <button id="button_player_2_name" type="button">add name</button>
-        </form>
-        
-        <div>
+       
+        <div class="choose_move_container">
           <p>choose your move:</p>
-          <img id="player_2_move_o" move="O" src="img/alpha-o-circle.svg"/>
-          <img id="player_2_move_x" move="X" src="img/alpha-x-circle.svg"/>
+          <div class="choose_move">
+            <p id="player_2_move_o" move="O" class="move_selected">O</p>
+            <p id="player_2_move_x" move="X" class="move_no_selected">X</p>
+          </div>
         </div>
       </div>
     </div>

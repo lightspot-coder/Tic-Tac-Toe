@@ -263,7 +263,7 @@ const display_players = (function(){
     const change_header = (player) => {
 
         //"player_1","player_1_name"
-        let id = "player_" + (player + 1);
+        let id = "player_" + (player + 1) + "_div";
         let input = "player_" + (player + 1) + "_name";
         
         console.log(id);
@@ -414,6 +414,7 @@ function addMove(id){
             displayBoard.remove_event(id);
             console.log("addMove: trying to render a " + next_move);
             cell_clicked.childNodes[0].textContent = next_move;
+            cell_clicked.childNodes[0].setAttribute("move",next_move);
             
             let statOfGame = Game.flowOfGame(next_move,+id.charAt(5),+id.charAt(6));
             if(statOfGame[0] || statOfGame[1]){ // someone win the game or ties

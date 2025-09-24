@@ -1,26 +1,47 @@
+@font-face {
+    font-family: 'Bogart Trial';
+    src: url('fonts/BogartTrial-Regular.woff2') format('woff2'),
+        url('fonts/BogartTrial-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+*{
+    font-family: "Bogart Trial", sans-serif;
+    color:#474545;
+    font-weight: bold;
+    background-color: #f0eeeac7;
+}
+
+span, input,h2{
+    font-family: sans-serif;
+}
+
 body{
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .footer{
-    background-color: rgb(189, 197, 197);
+
+    
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 200px;
     height: 100px;
 }
 
 .container{
-    margin-left: 200px;
-    width: 800px;
-    height: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-content: space-around;
-    gap: 80px;
+    
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 0.5fr;
+    gap: 20px;
 }
 
 .main-container{
@@ -28,13 +49,14 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 300px;
 }
 
 .board{
+    
     display: grid;
     grid-template-columns: 100px 100px 100px;
     grid-template-rows: 100px 100px 100px;
+
 }
 .cell {
     border: 2px solid black;
@@ -53,19 +75,93 @@ img[id*="player_"] {
 }
 
 .move_selected{
-    border: 5px solid red;
+
+    border: 2px solid #474545;
+    border-radius: 100px;
     
 }
 
 .move_no_selected{
-    border-style: none;
+    border: 2px solid #f0eeeac7;
+}
+
+
+#player_1_div, #player_2_div{
+    padding: 10px;
 }
 
 
 .current_player{
-    border: 5px solid blue;
+    border-radius: 20px;
+    border: 5px solid #474545;
 }
 
-.not_current_player{
-    border-style: none;
+.no_current_player{
+
+     border: 5px solid #f0eeeac7;
 }
+
+#restart_game{
+
+    border-radius: 5px;
+    width: 80%;
+    height: 40%;
+    background-color: #c9c6c1c7;
+    font-size: x-large;
+}
+#restart_game:hover{
+
+    background-color: #6b6a68c7;
+}
+
+#game-over-message{
+    height: 70px;
+    width: 300px;
+}
+
+button{
+    margin-top: 5px;
+    border-radius: 5px;
+    border-color: #f0eeeac7;
+}
+button:hover{
+    background-color: #6b6a68c7;
+}
+
+input{
+    margin-top: 5px;
+    border-radius: 5px;
+    border-color: #f0eeeac7;
+}
+.choose_move_container{
+
+    display: flex;
+    flex-direction: column;
+    
+    
+
+}
+.choose_move{
+    display: flex;
+    justify-content: center;
+    font-size: xx-large;
+}
+
+.choose_move p{
+
+    text-align: center;
+    width: 70px;
+    
+}
+
+p[move="X"]{
+    
+    color:blue;
+}
+
+p[move="O"]{
+   
+    color:red;
+}
+
+
